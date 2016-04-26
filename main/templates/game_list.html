@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+  {% for game in games  %}
+<a href="/game_detail/{{game.pk}}">{{game.title}}</a><br><br>
+
+
+  {% endfor %}
+
+{% endblock body %}

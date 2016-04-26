@@ -1,12 +1,12 @@
-from main.models import Game , CustomUser
+from main.models import Game, CustomUser, Game_result
 from django import forms
 from django.contrib.auth.forms import UserCreationForm ,UserChangeForm
 
 
 
-    ###########################################################
-    ######################## USER FORMS #######################
-    ###########################################################
+	###########################################################
+	######################## USER FORMS #######################
+	###########################################################
 
 class CustomUserCreationForm(UserCreationForm):
 	def __init__(self,*args,**kwargs):
@@ -20,7 +20,7 @@ class CustomUserCreationForm(UserCreationForm):
 class CustonUserChangeForm(UserChangeForm):
 	def __init__(self,*args,**kwargs):
 		super(CustonUserChangeForm,self).__init__( *args, **kwargs)
-		    #del self.fields['username']
+			#del self.fields['username']
 
 	class Meta:
 		model = CustomUser
@@ -39,23 +39,35 @@ class EditProfileForm(forms.ModelForm):
 		fields=['first_name','last_name','email']
 
 
-    ###########################################################
-    ######################## GAME FORMS #######################
-    ###########################################################
+	###########################################################
+	######################## GAME FORMS #######################
+	###########################################################
 
 class CreateGameForm(forms.ModelForm):
-    class Meta:
-        model = Game
-        fields = '__all__'
+	class Meta:
+		model = Game
+		fields = '__all__'
 
 class EditGameForm(forms.ModelForm):
-    class Meta:
-        model = Game
-        fields = '__all__'
+	class Meta:
+		model = Game
+		fields = '__all__'
 
 
-    ###########################################################
-    ######################## FEEDBACK FORMS #######################
-    ###########################################################
+	###########################################################
+	######################## Game result FORMS #######################
+	###########################################################
+
+class CreateGameResultForm(forms.ModelForm):
+	class Meta:
+		model = Game_result
+		fields = '__all__'
+
+
+class EditGameResultForm(forms.ModelForm):
+	class Meta:
+		model = Game_result
+		fields = '__all__'
+
 
  

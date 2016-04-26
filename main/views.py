@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from forms import CustomUserCreationForm , CustomUserLoginForm , EditProfileForm,CreateGameForm
-from main.models import CustomUser, Game
-from django.http import HttpResponse, HttpResponseRedirect
+from forms import CustomUserCreationForm, CustomUserLoginForm, EditProfileForm, CreateGameForm, EditGameForm, CreateGameResultForm, EditGameResultForm
+from main.models import CustomUser, Game, Game_result
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth import authenticate ,login , logout
 from django.conf import settings
+from django.contrib.admin.views.decorators import staff_member_required
 # Create your views here.
 
 
@@ -126,7 +127,7 @@ def edit_profile(request):
     ######################## GAME VIEWS #######################
     ###########################################################
 
-
+@staff_member_required
 def create_game(request):
     context ={}
 
@@ -141,6 +142,8 @@ def create_game(request):
         context['form']=form
     return render (request,'create_game.html',context)
 
+
+@staff_member_required
 def edit_game(request,pk):
 
     context= {}
@@ -154,10 +157,14 @@ def edit_game(request,pk):
         form.save()
     redirect ('/game_detail/%s' % game.pk)
 
+
+@staff_member_required
 def delete_game(request,pk):
-    game = game.objects.get(pk=pk)
+    game = Game.objects.get(pk=pk)
     game.delete()
     redirect('/game_list/')
+
+
 
 def game_list(request):
 
@@ -166,6 +173,7 @@ def game_list(request):
     context['games']= games
 
     return render (request,'game_list.html',context)
+
 
 
 def game_detail(request,pk):
@@ -177,3 +185,54 @@ def game_detail(request,pk):
     print str(game.title)
 
     return render(request,'game_detail.html',context)
+
+
+
+    ###########################################################
+    ######################## GAME result VIEWS #######################
+    ###########################################################
+
+@staff_member_required
+def create_game_result(request, pk):
+    
+    context = {}
+
+    form = CreateGameResultForm()
+
+    context['form'] = form
+
+    if request.method == 'POST':
+        form = CreateGameResultForm(request.POST)
+
+        if form.is_valid():
+            result = form.save(commit=False)
+            result.game = Game.objects.get(pk=pk)
+            result.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+    return render(request,'create_game_result.html', context)
+
+
+
+@staff_member_required
+def edit_game_result(request,pk):
+
+    context= {}
+    game_result = Game_result.objects.get(pk=pk)
+    context['game_result']= game_result
+
+    form = EditGameResultForm(request.POST or non ,instance = game_result)
+    context['form'] = form
+
+    if form.is_valid():
+        form.save()
+    redirect ('/game_detail/%s' % game.pk)
+
+
+
+@staff_member_required
+def delete_game_result(request,pk):
+    game_result = Game_result.objects.get(pk=pk)
+    game_result.delete()
+    redirect('/game_list/')
+

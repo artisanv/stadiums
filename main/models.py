@@ -2,7 +2,6 @@ from django.db import models
 from django.utils import timezone
 from django.utils.http import urlquote
 from django.core.mail import send_mail
-
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 # Create your models here.
 
@@ -53,7 +52,7 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
 	is_staff = models.BooleanField('staff status', default=False)
 	is_active = models.BooleanField('active', default=False)
 	date_joined = models.DateTimeField('date joined',auto_now_add=True)
-    rank = models.FloatField(default=0.0)
+	rank = models.FloatField(default=0.0)
 	participant = models.ManyToManyField('main.Game')
 
 
@@ -95,16 +94,16 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
 
 class Game(models.Model):
 
-    WEEK_DAYS = (
-        ('SATURDAY', 'Saturday'),
-        ('SUNDAY', 'Sunday'),
-        ('MONDAY', 'Monday'),
-        ('TUESDAY', 'Tuesday'),
-        ('WEDNSDAY', 'Wednsday'),
-        ('THURSDAY', 'Friday')
-    )
+	WEEK_DAYS = (
+		('SATURDAY', 'Saturday'),
+		('SUNDAY', 'Sunday'),
+		('MONDAY', 'Monday'),
+		('TUESDAY', 'Tuesday'),
+		('WEDNSDAY', 'Wednsday'),
+		('THURSDAY', 'Friday')
+	)
 
-    SKILLS = (
+	SKILLS = (
 		('BEGINNER', 'Beginner'),
 		('INTERMEDIATE', 'Intermediate'),
 		('ADVANCED', 'Advanced'))
@@ -117,17 +116,18 @@ class Game(models.Model):
     custom_user = models.ForeignKey('main.CustomUser')
     finished = models.BooleanField(default=False)
 
-    def __unicode__(self):
-        return self.title
+	def __unicode__(self):
+		return self.title
 
 
 class Game_result(models.Model):
-    title = models.CharField(max_length=255)
-    result = models.SlugField()
-    winner = models.CharField('winner',max_length=255)
-    winner_image = models.ImageField()
-    loser = models.CharField('winner',max_length=255)
-    loser_image = models.ImageField()
+	title = models.CharField(max_length=255)
+	result = models.SlugField()
+	winner = models.CharField('winner',max_length=255)
+	winner_image = models.ImageField()
+	loser = models.CharField('loser',max_length=255)
+	loser_image = models.ImageField()
+	game = models.ForeignKey('main.Game', default=True)
 
-    def __unicode__(self):
-        return self.title
+	def __unicode__(self):
+		return self.title

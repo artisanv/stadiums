@@ -115,6 +115,7 @@ class Game(models.Model):
     title = models.CharField('title',max_length=255,blank=True,null=True)
     skill  = models.CharField(max_length=100, choices= SKILLS, default='BEGINNER')
     custom_user = models.ForeignKey('main.CustomUser')
+    finished = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.title

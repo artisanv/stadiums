@@ -95,6 +95,7 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
 class Game(models.Model):
 
 	WEEK_DAYS = (
+
 	('SATURDAY', 'Saturday'),
 	('SUNDAY', 'Sunday'),
 	('MONDAY', 'Monday'),
@@ -115,6 +116,7 @@ class Game(models.Model):
 	custom_user = models.ForeignKey('main.CustomUser')
 	finished = models.BooleanField(default=False)
 
+
 	def __unicode__(self):
 		return self.title
 
@@ -123,9 +125,11 @@ class Game_result(models.Model):
 	title = models.CharField(max_length=255)
 	result = models.SlugField()
 	winner = models.CharField('winner',max_length=255)
+
 	winner_image = models.ImageField(null=True,blank=True)
 	loser = models.CharField('loser',max_length=255)
 	loser_image = models.ImageField(null=True,blank=True)
+
 	game = models.ForeignKey('main.Game', default=True)
 
 	def __unicode__(self):
